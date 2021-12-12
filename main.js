@@ -1,10 +1,13 @@
 x = 0
 y = 0
-Draw_Circle=""
-Draw_Rect=""
+Draw_apple=""
 
 var SpeechRecognition=window.webkitSpeechRecognition
 var recognition=new SpeechRecognition()
+
+function preload(){
+    apple=loadImage("AAPLEr.png")
+}
 
 function start(){
     document.getElementById("status").innerHTML="the system is listening. Pls speak to bring a meaning to my existence: "
@@ -15,34 +18,35 @@ recognition.onresult=function (event){
     console.log(event)
     var content=event.results[0][0].transcript
     document.getElementById('status').innerHTML="I think you are saying: " + content
-    if(content == "circle." || content == "Circle."){
-        x = Math.floor(Math.random()* 900)
-        y=  Math.floor(Math.random()* 600)
-        document.getElementById("status").innerHTML="I am Drawing a circle "
-        Draw_Circle="set" 
-    }
-    if(content == "Rectangle." || content == "rectangle."){
-        x = Math.floor(Math.random()* 900)
-        y=  Math.floor(Math.random()* 600)
-        document.getElementById("status").innerHTML="I am Drawing a rectangle "
-        Draw_Rect="set"
-    }
-}
+    to_number= Number(content)
+    if(Number.isInteger(to_number)){
+       document.getElementById("status").innerHTML="Apple is beimg drawn "
+       Draw_apple="set"
+} else{
+    document.getElementById("status").innerHTML="System not recognise number. ERROR"
+}}
 
 function setup(){
     canvas=createCanvas(900,600)
 }
 
 function draw(){
-    if(Draw_Circle == "set"){
-        radius=Math.floor(Math.random()* 100)
-        circle(x,y,radius)
-        document.getElementById("status").innerHTML="Your circle is drawn IDIOT! "
-        Draw_Circle=""
+    if(Draw_apple == "set"){
+        for(var i=1; i<=to_number; i++){
+        x=Math.floor(Math.random * 700);
+        y=Math.floor(Math.random * 400);
+        image(apple,x,y,50,50)
+        }
+        document.getElementById("status").innerHTML=to_number+"  Apples are drawn your highness"
+        Draw_apple=""
+        speak_data=to_number + "apples drawn"
+        speak()
     }
-    if(Draw_Rect == "set"){
-        rect(x,y,80,60)
-        document.getElementById("status").innerHTML="Your rectangle is drawn IDIOT! "
-        Draw_Rect=""
-    }
+}
+
+function speak(){
+    var synth=window.speechSynthesis
+    var utterthis=SpeechSynthesisUtterance(speak_data)
+    synth.speak(utterthis)
+    speak_data="empty"
 }
