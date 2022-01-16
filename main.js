@@ -1,8 +1,10 @@
 x = 0
 y = 0
 Draw_apple=""
+apple=""
+to_number=0
 
-var SpeechRecognition=window.webkitSpeechRecognition
+var SpeechRecognition=window.webkitSpeechRecognition;
 var recognition=new SpeechRecognition()
 
 function preload(){
@@ -33,8 +35,8 @@ function setup(){
 function draw(){
     if(Draw_apple == "set"){
         for(var i=1; i<=to_number; i++){
-        x=Math.floor(Math.random * 700);
-        y=Math.floor(Math.random * 400);
+        x=Math.floor(Math.random() * 700);
+        y=Math.floor(Math.random() * 400);
         image(apple,x,y,50,50)
         }
         document.getElementById("status").innerHTML=to_number+"  Apples are drawn your highness"
@@ -46,7 +48,7 @@ function draw(){
 
 function speak(){
     var synth=window.speechSynthesis
-    var utterthis=SpeechSynthesisUtterance(speak_data)
+    var utterthis= new SpeechSynthesisUtterance(speak_data)
     synth.speak(utterthis)
-    speak_data="empty"
+    speak_data=""
 }
